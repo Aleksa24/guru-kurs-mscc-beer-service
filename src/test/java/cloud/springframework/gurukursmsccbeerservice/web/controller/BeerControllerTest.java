@@ -1,7 +1,9 @@
 package cloud.springframework.gurukursmsccbeerservice.web.controller;
 
+import cloud.springframework.gurukursmsccbeerservice.bootstrap.BeerLoader;
 import cloud.springframework.gurukursmsccbeerservice.domain.Beer;
 import cloud.springframework.gurukursmsccbeerservice.repositories.BeerRepository;
+import cloud.springframework.gurukursmsccbeerservice.services.BeerService;
 import cloud.springframework.gurukursmsccbeerservice.web.model.BeerDto;
 import cloud.springframework.gurukursmsccbeerservice.web.model.BeerStyleEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -47,12 +49,12 @@ class BeerControllerTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    BeerRepository beerRepository;
+    BeerService beerService;
 
     @Test
     void getBeerById() throws Exception {
-        given(beerRepository.findById(any()))
-                .willReturn(Optional.of(Beer.builder().build()));
+        given(beerService.getById(any()))
+                .willReturn(BeerDto.builder().build());
 
         mockMvc.perform(get("/api/v1/beer/{beerId}", UUID.randomUUID().toString())
                 .param("iscold","yes")//ovako se stavlja query param
@@ -80,6 +82,9 @@ class BeerControllerTest {
 
     @Test
     void saveNewBeer() throws Exception {
+        given(beerService.saveNewBeer(any()))
+                .willReturn(BeerDto.builder().build());
+
         BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
@@ -105,6 +110,9 @@ class BeerControllerTest {
 
     @Test
     void updateBeerById() throws Exception {
+        given(beerService.updateBeer(any(),any()))
+                .willReturn(BeerDto.builder().build());
+
         BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
@@ -119,7 +127,7 @@ class BeerControllerTest {
                 .beerName("My Beer")
                 .beerStyle(BeerStyleEnum.ALE)
                 .price(new BigDecimal("2.99"))
-                .upc(123123123L)
+                .upc(BeerLoader.BEER_1_UPC)
                 .build();
     }
 
