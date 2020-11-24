@@ -6,7 +6,7 @@ Aleksa Ivanovic;
 
 Sample application demonstrating how to use Spring Rest Docs With JUnit 5.
 
-`BeerOrderControllerTest` makes a call to a very simple service and produces three
+`BeerOControllerTest` makes a call to a very simple service and produces three
 documentation snippets.
 
 GET BEER
